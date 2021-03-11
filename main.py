@@ -42,6 +42,7 @@ def running(CPU):
 def Procesar(proceso, name,  RAM, CPU, cpu_time):
   global tiempo_total
   #obtener RAM
+  yield env.timeout(random.expovariate(1.0/10))
   ready(proceso)
   yield RAM.get(proceso.getRam())  
   print('%s using %d of RAM at %d'%(name,proceso.getRam(), env.now))
