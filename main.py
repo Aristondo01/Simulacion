@@ -20,6 +20,7 @@ class Proceso():
     self.Instrucciones=valor
 
   def getInst(self):
-    return self.Instrucciones
+    return self.Instrucciones  
+    
   
 
