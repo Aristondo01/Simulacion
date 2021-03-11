@@ -76,3 +76,22 @@ def Procesar(proceso, name,  RAM, CPU, WAITING, cpu_time):
      
   
 
+
+random.seed(10)
+cantidad = 25
+length = [25, 50, 100, 150, 200]
+times = []
+for cantidad in length:
+  tiempo_total = 0
+  env = simpy.Environment()
+  RAM = simpy.Container(env,init=100,capacity=100)
+  CPU = simpy.Resource(env, capacity = 1)
+  WAITING = simpy.Resource(env, capacity = 1)
+  for i in range(cantidad):
+    proceso = Proceso()
+    env.process(Procesar(proceso, 'Process %d' % i ,RAM, CPU, WAITING, 3))
+  
+  env.run()
+  times.append(tiempo_total/cantidad)
+
+print("La desviacion estandar es:", stat.stdev(times))
