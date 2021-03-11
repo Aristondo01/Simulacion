@@ -24,7 +24,7 @@ class Proceso():
     
 def ready(isReady):
   isReady.setRam(random.randint(1, 10))
-  isReady.setInst(random.randint(1,10))
+  isReady.setInst(random.randint(1, 10))
 
 def running(CPU):
   InstCant=CPU.getInst()
@@ -74,8 +74,6 @@ def Procesar(proceso, name,  RAM, CPU, WAITING, cpu_time):
       finish_time = env.now
       tiempo_total = tiempo_total + (finish_time - initial_time)
      
-  
-
 
 random.seed(10)
 cantidad = 25
@@ -94,7 +92,6 @@ for cantidad in length:
   env.run()
   times.append(tiempo_total/cantidad)
 
-print("La desviacion estandar es:", stat.stdev(times))
 plt.plot(length, times)
 plt.ylabel('Tiempo promedio')
 plt.xlabel("Cantidad de procesos")
