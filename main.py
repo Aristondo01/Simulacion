@@ -39,7 +39,7 @@ def running(CPU):
 
   
 
-def Procesar(proceso, name,  RAM, CPU, WAITING, cpu_time):
+def Procesar(proceso, name,  RAM, CPU, cpu_time):
   global tiempo_total
   #obtener RAM
   ready(proceso)
@@ -62,12 +62,9 @@ def Procesar(proceso, name,  RAM, CPU, WAITING, cpu_time):
     if(not finished):
       waitingStatus=random.randint(1,2)
       if(waitingStatus==1):
-        with WAITING.request() as req:
-          print('%s is specting a spot on waiting at %d' % (name, env.now))
-          yield req
-          print('%s is waiting at %d' %(name, env.now))
-          yield env.timeout(1)
-          print('%s is leaving waiting at %d' % (name, env.now))
+        print('%s is entering waiting at %d' %(name, env.now))
+        yield env.timeout(1)
+        print('%s is leaving waiting at %d' % (name, env.now))
     else:
       RAM.put(proceso.getRam())
       print('%s is terminated at %d' % (name, env.now))
@@ -84,10 +81,9 @@ for cantidad in length:
   env = simpy.Environment()
   RAM = simpy.Container(env,init=100,capacity=100)
   CPU = simpy.Resource(env, capacity = 1)
-  WAITING = simpy.Resource(env, capacity = 1)
   for i in range(cantidad):
     proceso = Proceso()
-    env.process(Procesar(proceso, 'Process %d' % i ,RAM, CPU, WAITING, 3))
+    env.process(Procesar(proceso, 'Process %d' % i ,RAM, CPU, 3))
   
   env.run()
   times.append(tiempo_total/cantidad)
