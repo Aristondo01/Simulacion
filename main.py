@@ -1,7 +1,7 @@
 import simpy
 import random
 #import matplotlib.pyplot as plt
-#import statistics as stat
+import statistics as stat
 
 
 class Proceso():
