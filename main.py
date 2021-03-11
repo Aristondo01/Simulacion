@@ -1,6 +1,6 @@
 import simpy
 import random
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import statistics as stat
 
 
@@ -95,3 +95,7 @@ for cantidad in length:
   times.append(tiempo_total/cantidad)
 
 print("La desviacion estandar es:", stat.stdev(times))
+plt.plot(length, times)
+plt.ylabel('Tiempo promedio')
+plt.xlabel("Cantidad de procesos")
+plt.show()
