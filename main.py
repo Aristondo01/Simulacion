@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import statistics as stat
 
 
+
 class Proceso():
 
   def __init__(self):
@@ -28,10 +29,10 @@ def ready(isReady):
 
 def running(CPU):
   InstCant=CPU.getInst()
-  if(InstCant<=3):
+  if(InstCant<=6):
     CPU.setInst(0)
   else:
-    CPU.setInst(CPU.getInst()-3)
+    CPU.setInst(CPU.getInst()-6)
     
   if(CPU.getInst()==0):
     return True
@@ -41,12 +42,15 @@ def running(CPU):
 
 def Procesar(proceso, name,  RAM, CPU, cpu_time):
   global tiempo_total
+
+  initial_time = env.now
+
   #obtener RAM
   yield env.timeout(random.expovariate(1.0/10))
+  print('%s create at %d'%(name, env.now))
   ready(proceso)
   yield RAM.get(proceso.getRam())  
   print('%s using %d of RAM at %d'%(name,proceso.getRam(), env.now))
-  initial_time = env.now
   finished = False
   waitingStatus=0
   while (not finished):
@@ -80,15 +84,19 @@ times = []
 for cantidad in length:
   tiempo_total = 0
   env = simpy.Environment()
-  RAM = simpy.Container(env,init=100,capacity=100)
-  CPU = simpy.Resource(env, capacity = 1)
+  RAM = simpy.Container(env,init=200,capacity=200)
+  CPU = simpy.Resource(env, capacity = 2)
   for i in range(cantidad):
     proceso = Proceso()
-    env.process(Procesar(proceso, 'Process %d' % i ,RAM, CPU, 3))
+    env.process(Procesar(proceso, 'Process %d' % i ,RAM, CPU, 1))
   
   env.run()
   times.append(tiempo_total/cantidad)
 
+
+print("Tiempos", times)
+
+print("La desviacion estandar es:", stat.stdev(times))
 plt.plot(length, times)
 plt.ylabel('Tiempo promedio')
 plt.xlabel("Cantidad de procesos")
